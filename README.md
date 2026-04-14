@@ -33,24 +33,44 @@ docker run -d -p 5003:5003 -v $(pwd)/db:/app/db --name mytools jasperjiang/mytoo
 
 ```
 MyTools/
-├── backend/              # Flask 后端
-│   ├── app/             # 应用核心
-│   ├── tools/           # 工具目录（每个工具独立隔离）
-│   │   └── kairo-cafe/  # 开罗咖啡店攻略工具
+├── .claude/             # Claude Code skills
+│   └── skills/
+├── .gitignore
+├── Dockerfile           # 根目录 Dockerfile
+├── README.md
+├── CLAUDE.md
+├── backend/             # Flask 后端
+│   ├── app/            # 应用核心
+│   │   ├── __init__.py
+│   │   ├── config.py
+│   │   ├── routes/
+│   │   └── utils/
+│   ├── tools/          # 工具目录（每个工具独立隔离）
+│   │   └── kairo-cafe/ # 开罗咖啡店攻略工具
+│   │       ├── config.py
+│   │       ├── handler.py
+│   │       └── templates/
+│   ├── pyproject.toml
 │   ├── requirements.txt
-│   └── run.py
-├── frontend/            # 前端静态文件
-│   └── src/
-│       └── index.html
-├── docker/              # Docker 配置
-├── db/                  # 数据目录（工具JSON，由Docker挂载）
+│   ├── run.py
+│   └── uv.lock
+├── frontend/           # 前端静态文件
+│   ├── src/
+│   │   ├── css/
+│   │   └── index.html
+│   ├── package.json
+│   └── tailwind.config.js
+├── db/                 # 数据目录（工具JSON，由Docker挂载）
 │   └── tools/
 │       └── kairo-cafe/
 │           ├── customer_complaints.json
 │           └── recipes.json
-├── tests/               # Playwright 测试
-├── Dockerfile           # 根目录 Dockerfile
-└── README.md
+├── docs/               # 项目文档
+│   ├── PROJECT_SUMMARY.md
+│   ├── superpowers/
+│   └── 开罗咖啡店工具/
+├── tests/              # Playwright 测试
+└── package.json
 ```
 
 ## 添加新工具
