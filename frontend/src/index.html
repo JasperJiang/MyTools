@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyTools - 工具集合</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="text-xl font-bold text-gray-800">🛠️ MyTools</a>
+                <div class="hidden md:flex space-x-4">
+                    <a href="/" class="text-gray-600 hover:text-gray-900 px-3 py-2">首页</a>
+                </div>
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <a href="/" class="block px-4 py-2 text-gray-600 hover:bg-gray-100">首页</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">工具集合</h1>
+            <p class="text-gray-600 text-lg">高效便捷的工具，助力你的工作</p>
+        </div>
+
+        <!-- Tools Grid -->
+        <div id="tools-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Tools will be loaded here -->
+            <div class="col-span-full text-center py-12">
+                <div class="animate-spin inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+                <p class="mt-4 text-gray-500">加载中...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-auto">
+        <div class="max-w-6xl mx-auto px-4 py-6">
+            <p class="text-center text-gray-500 text-sm">MyTools - 工具集合</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Load tools from API
+        async function loadTools() {
+            try {
+                const res = await fetch('/api/tools');
+                const data = await res.json();
+                renderTools(data.tools || []);
+            } catch (err) {
+                console.error('Failed to load tools:', err);
+                document.getElementById('tools-grid').innerHTML = `
+                    <div class="col-span-full text-center py-12 text-red-500">
+                        加载工具失败，请刷新页面重试
+                    </div>
+                `;
+            }
+        }
+
+        function renderTools(tools) {
+            const grid = document.getElementById('tools-grid');
+
+            if (tools.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-gray-500">
+                        暂无工具
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = tools.map(tool => `
+                <a href="/tool/${tool.name}"
+                   class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-blue-200 transition-all duration-200 block group">
+                    <div class="text-4xl mb-4">${tool.icon || '🛠️'}</div>
+                    <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                        ${tool.display_name || tool.name}
+                    </h3>
+                    <p class="mt-2 text-gray-500 text-sm line-clamp-2">
+                        ${tool.description || '暂无描述'}
+                    </p>
+                </a>
+            `).join('');
+        }
+
+        // Initialize
+        loadTools();
+    </script>
+</body>
+</html>

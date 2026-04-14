@@ -1,0 +1,12 @@
+{
+  "name": "mytools-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx tailwindcss -i ./src/css/input.css -o ./dist/output.css --watch",
+    "build": "npx tailwindcss -i ./src/css/input.css -o ./dist/output.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}
